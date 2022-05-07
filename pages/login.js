@@ -61,8 +61,11 @@ const Login = () => {
                 // ...
             })
             .then(async () => {
-                await axios.post('/api/login', {
+                await axios.post('/api/register', {
+                    name: auth.currentUser.displayName,
                     email: auth.currentUser.email,
+                }).then((res) => {
+                    localStorage.setItem('HotelUser', JSON.stringify(res.data));
                 })
             })
 
@@ -85,6 +88,7 @@ const Login = () => {
     useEffect(() => {
         signOut(auth).then(() => {
             // Sign-out successful.
+            localStorage.removeItem('HotelUser');
         }).catch((error) => {
             // An error happened.
         });

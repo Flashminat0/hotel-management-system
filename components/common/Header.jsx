@@ -5,10 +5,10 @@ import {firebaseApp} from "../../firebase";
 
 
 const navigation = [
-    {name: 'Solutions', href: '#'},
+    {name: 'Rooms', href: '#'},
     {name: 'Pricing', href: '#'},
-    {name: 'Docs', href: '#'},
-    {name: 'Company', href: '#'},
+    {name: 'Taxi Service', href: '#'},
+    {name: 'Account', href: '#'},
 ]
 
 const Header = () => {
@@ -41,7 +41,7 @@ const Header = () => {
                     className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
                     <div className="flex items-center">
                         <a href="#">
-                            <span className="sr-only">Workflow</span>
+                            <span className="sr-only">Hotel Company</span>
                             <img
                                 className="h-10 w-auto"
                                 src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-hotel-hotel-management-flaticons-flat-flat-icons.png"

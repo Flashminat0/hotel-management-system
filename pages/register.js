@@ -36,7 +36,9 @@ const Register = () => {
                             email: auth.currentUser.email,
                         }).then(async (res) => {
                             // Profile updated!
-                            console.log(res);
+                            localStorage.setItem('HotelUser', JSON.stringify(res.data));
+
+
                             await router.push('/about');
                             // ...
                         })
@@ -72,7 +74,7 @@ const Register = () => {
                     name: auth.currentUser.displayName,
                     email: auth.currentUser.email,
                 }).then((res) => {
-                    console.log(res);
+                    localStorage.setItem('HotelUser', JSON.stringify(res.data));
                 })
             })
             .then(async () => {
@@ -93,6 +95,7 @@ const Register = () => {
     useEffect(() => {
         signOut(auth).then(() => {
             // Sign-out successful.
+            localStorage.removeItem('HotelUser');
         }).catch((error) => {
             // An error happened.
         });
