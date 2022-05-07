@@ -10,7 +10,7 @@ import {
 import {useRouter} from "next/router";
 import {firebaseApp} from "../firebase";
 import HomeLayout from "../components/layout/HomeLayout";
-
+import axios from "axios";
 
 const Register = () => {
     const router = useRouter();
@@ -29,14 +29,22 @@ const Register = () => {
                 updateProfile(auth.currentUser, {
                     displayName: displayName,
                     photoURL: "https://firebasestorage.googleapis.com/v0/b/hotel-management-system-eef64.appspot.com/o/blank-profile-picture-973460__480.webp?alt=media&token=9a424f68-fd91-4e9f-9866-f417c7633630",
-                }).then(async () => {
-                    // Profile updated!
-                    await router.push('/about');
-                    // ...
-                }).catch((error) => {
-                    // An error occurred
-                    // ...
-                });
+                })
+                    .then(() => {
+                        axios.post('/api/register', {
+                            name: auth.currentUser.displayName,
+                            email: auth.currentUser.email,
+                        }).then(async (res) => {
+                            // Profile updated!
+                            console.log(res);
+                            await router.push('/about');
+                            // ...
+                        })
+                    })
+                    .catch((error) => {
+                        // An error occurred
+                        // ...
+                    });
                 // ...
             })
             .catch((error) => {
@@ -58,7 +66,14 @@ const Register = () => {
                 // The signed-in user info.
                 const user = result.user;
 
-                // ...
+            })
+            .then(async () => {
+                await axios.post('/api/register', {
+                    name: auth.currentUser.displayName,
+                    email: auth.currentUser.email,
+                }).then((res) => {
+                    console.log(res);
+                })
             })
             .then(async () => {
                 await router.push('/about');

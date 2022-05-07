@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import {firebaseApp} from "../firebase";
 import HomeLayout from "../components/layout/HomeLayout";
+import axios from "axios";
 
 const Login = () => {
     const router = useRouter();
@@ -27,10 +28,14 @@ const Login = () => {
                 const user = userCredential.user;
 
 
-
-
                 // ...
             })
+            .then(async () => {
+                await axios.post('/api/login', {
+                    email: auth.currentUser.email,
+                })
+            })
+
             .then(async () => {
                 await router.push('/about');
             })
@@ -55,6 +60,12 @@ const Login = () => {
 
                 // ...
             })
+            .then(async () => {
+                await axios.post('/api/login', {
+                    email: auth.currentUser.email,
+                })
+            })
+
             .then(async () => {
                 await router.push('/about');
             })
