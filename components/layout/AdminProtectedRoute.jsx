@@ -17,8 +17,6 @@ const AdminProtectedRoute = () => {
             setUserLoggedIn(true);
             setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
         }
-
-
     }, []);
 
     return (

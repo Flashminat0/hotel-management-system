@@ -26,19 +26,35 @@ const Header = () => {
                 // https://firebase.google.com/docs/reference/js/firebase.User
                 const uid = user.uid;
                 setLoggedIn(true)
-                setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
-
 
                 // ...
             } else {
                 setLoggedIn(false)
                 // User is signed out
                 // ...
+                setRole([]);
             }
         });
 
+        if (!auth.currentUser) {
+            setLoggedIn(false)
+            setRole([]);
+        }
+
     }, [auth.currentUser]);
 
+
+    useEffect(() => {
+        if (loggedIn) {
+            if  (localStorage.getItem('HotelUser') !== null) {
+                setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
+            }
+        }
+    }, [loggedIn]);
+
+    function setSingedOutState() {
+        setLoggedIn(false);
+    }
 
     return (
         <header className="bg-indigo-600">
@@ -81,13 +97,20 @@ const Header = () => {
                                     Account
                                 </a>
                             </Link>}
-                            {loggedIn && role.includes("admin") &&
-                                <Link href={'/admin-panel'}>
-                                    <a
-                                        className="text-base font-medium text-white hover:text-indigo-50">
-                                        Admin Panel
-                                    </a>
-                                </Link>
+                            {loggedIn &&
+                                <>
+                                    {role.includes("admin")
+                                        &&
+                                        <Link href={'/admin-panel'}>
+                                            <a
+                                                className="text-base font-medium text-white hover:text-indigo-50">
+                                                Admin Panel
+                                            </a>
+                                        </Link>
+                                    }
+                                </>
+
+
                             }
                         </div>
                     </div>
