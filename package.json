@@ -6,8 +6,11 @@
     "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
+    "@tailwindcss/forms": "^0.5.1",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
+    "firebase": "^9.8.0",
     "http-proxy-middleware": "^2.0.4",
     "next": "latest",
     "react": "^17.0.2",
