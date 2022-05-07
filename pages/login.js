@@ -37,7 +37,7 @@ const Login = () => {
             })
 
             .then(async () => {
-                await router.push('/about');
+                await router.push('/');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -70,7 +70,7 @@ const Login = () => {
             })
 
             .then(async () => {
-                await router.push('/about');
+                await router.push('/');
             })
 
             .catch((error) => {

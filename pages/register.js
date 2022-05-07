@@ -39,7 +39,7 @@ const Register = () => {
                             localStorage.setItem('HotelUser', JSON.stringify(res.data));
 
 
-                            await router.push('/about');
+                            await router.push('/');
                             // ...
                         })
                     })
@@ -78,7 +78,7 @@ const Register = () => {
                 })
             })
             .then(async () => {
-                await router.push('/about');
+                await router.push('/');
             })
             .catch((error) => {
                 // Handle Errors here.

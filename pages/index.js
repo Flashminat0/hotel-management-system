@@ -1,18 +1,16 @@
 import React from 'react';
-import Link from "next/link";
+import HomeLayout from "../components/layout/HomeLayout";
 
 const Index = () => {
     return (
-        <div>
+        <HomeLayout>
             <ul>
                 <h1 className="text-3xl font-bold underline">
                     Hello world!
                 </h1>
             </ul>
-            <Link href="/about">
-                <a>About</a>
-            </Link>
-        </div>
+
+        </HomeLayout>
     );
 };
 
