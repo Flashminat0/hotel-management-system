@@ -9,7 +9,7 @@ const HotelPanel = () => {
 
 
     useEffect(() => {
-        axios.get('/api/hotel/getHotel', {
+        axios.get('/api/hotel/get-hotel', {
             params: {
                 hotelOwnerId: JSON.parse(localStorage.getItem('HotelUser'))._id
             }
@@ -37,7 +37,7 @@ const HotelPanel = () => {
 
     const saveData = async (e) => {
         e.preventDefault();
-        await axios.put('/api/hotel/updateHotel', {
+        await axios.put('/api/hotel/update-hotel', {
             roomData,
             hotelOwnerId: JSON.parse(localStorage.getItem('HotelUser'))._id
         }).then(res => {
