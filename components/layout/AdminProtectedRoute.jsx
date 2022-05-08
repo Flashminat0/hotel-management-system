@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useRouter} from "next/router";
 
-const AdminProtectedRoute = () => {
+const AdminProtectedRoute = ({children}) => {
     const router = useRouter();
 
     const [userLoggedIn, setUserLoggedIn] = useState(false);

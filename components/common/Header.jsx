@@ -4,14 +4,6 @@ import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {firebaseApp} from "../../firebase";
 import Link from "next/link";
 
-
-const navigation = [
-    {name: 'Rooms', href: '/rooms'},
-    {name: 'Pricing', href: ''},
-    {name: 'Taxi Service', href: '/'},
-    {name: 'Account', href: '/my-account'},
-]
-
 const Header = () => {
     const router = useRouter();
     const auth = getAuth(firebaseApp);
@@ -46,7 +38,7 @@ const Header = () => {
 
     useEffect(() => {
         if (loggedIn) {
-            if  (localStorage.getItem('HotelUser') !== null) {
+            if (localStorage.getItem('HotelUser') !== null) {
                 setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
             }
         }
@@ -99,6 +91,19 @@ const Header = () => {
                             </Link>}
                             {loggedIn &&
                                 <>
+                                    {role.includes("hotel-owner")
+                                        &&
+                                        <Link href={'/hotel-panel'}>
+                                            <a
+                                                className="text-base font-medium text-white hover:text-indigo-50">
+                                                Hotel Panel
+                                            </a>
+                                        </Link>
+                                    }
+                                </>
+                            }
+                            {loggedIn &&
+                                <>
                                     {role.includes("admin")
                                         &&
                                         <Link href={'/admin-panel'}>
@@ -109,9 +114,8 @@ const Header = () => {
                                         </Link>
                                     }
                                 </>
-
-
                             }
+
                         </div>
                     </div>
                     <div className="ml-10 space-x-4">
@@ -141,12 +145,56 @@ const Header = () => {
                     </div>
                 </div>
                 <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
-                    {navigation.map((link) => (
-                        <a key={link.name} href={link.href}
-                           className="text-base font-medium text-white hover:text-indigo-50">
-                            {link.name}
+                    <Link href={'/rooms'}>
+                        <a
+                            className="text-base font-medium text-white hover:text-indigo-50">
+                            Rooms
                         </a>
-                    ))}
+                    </Link>
+                    <Link href={'/pricing'}>
+                        <a
+                            className="text-base font-medium text-white hover:text-indigo-50">
+                            Pricing
+                        </a>
+                    </Link>
+                    <Link href={'/taxi'}>
+                        <a
+                            className="text-base font-medium text-white hover:text-indigo-50">
+                            Taxi Service
+                        </a>
+                    </Link>
+                    {loggedIn && <Link href={'/my-account'}>
+                        <a
+                            className="text-base font-medium text-white hover:text-indigo-50">
+                            Account
+                        </a>
+                    </Link>}
+                    {loggedIn &&
+                        <>
+                            {role.includes("hotel-owner")
+                                &&
+                                <Link href={'/hotel-panel'}>
+                                    <a
+                                        className="text-base font-medium text-white hover:text-indigo-50">
+                                        Hotel Panel
+                                    </a>
+                                </Link>
+                            }
+                        </>
+                    }
+                    {loggedIn &&
+                        <>
+                            {role.includes("admin")
+                                &&
+                                <Link href={'/admin-panel'}>
+                                    <a
+                                        className="text-base font-medium text-white hover:text-indigo-50">
+                                        Admin Panel
+                                    </a>
+                                </Link>
+                            }
+                        </>
+                    }
                 </div>
             </nav>
         </header>
