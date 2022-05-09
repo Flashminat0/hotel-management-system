@@ -5,6 +5,7 @@ import HotelManagerProtectedRoute from "../components/layout/HotelManagerProtect
 import {RiHomeLine} from "react-icons/ri";
 import {ImKey} from "react-icons/im";
 import {FaBed} from "react-icons/fa";
+import {BiMessageSquareAdd} from "react-icons/bi";
 
 const HotelPanel = () => {
     const [roomData, setRoomData] = useState([]);
@@ -72,6 +73,17 @@ const HotelPanel = () => {
                                 </div>
                             </div>
                             <div className="mt-5 md:mt-0 md:col-span-2">
+                                {!editState &&
+                                    <div className={`grid grid-cols-1 my-2`}>
+                                        <button
+                                            type="button"
+                                            className={`grid place-items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 `}
+                                        >
+                                           <BiMessageSquareAdd className={`h-8 w-8`}/> Add Room
+                                        </button>
+                                        <hr className={`pt-2`}/>
+                                    </div>
+                                }
                                 <form action="#" method="POST">
                                     <div className="shadow overflow-hidden sm:rounded-md">
                                         <div className="px-4 py-5 bg-white sm:p-6">
@@ -79,38 +91,39 @@ const HotelPanel = () => {
 
                                                 {filteredRoomData.map((room, index) => {
                                                     return (
-                                                        <div key={index} className="col-span-6">
-                                                            <div className="flex items-stretch w-full">
-                                                                <div className="flex-shrink-0">
-                                                                    <RiHomeLine className="h-6 w-6 text-gray-400"/>
+                                                        <div key={index} className={`col-span-6`}>
+                                                            <div className="grid grid-rows-1 grid-cols-8 w-full">
+                                                                <div className="grid place-items-center">
+                                                                    <RiHomeLine className="h-8 w-8 text-gray-400"/>
                                                                 </div>
-                                                                <div className="ml-4">
+                                                                <div className="ml-4 col-span-3">
                                                                     <h4 className="text-lg leading-6 font-medium text-gray-900">
                                                                         {room.roomType[0].toUpperCase() + room.roomType.slice(1) + ' Room'}
                                                                     </h4>
                                                                     <p className="mt-1 text-sm leading-5 text-gray-500">
-                                                                        LKR {room.price} &nbsp;|&nbsp; <ImKey className={`inline h-2`}/> {room.roomNumber} &nbsp;|&nbsp; <FaBed className={`inline`}/>  {room.beds} Beds
+                                                                        LKR {room.price}.00 &nbsp;|&nbsp; <ImKey
+                                                                        className={`inline h-2`}/> {room.roomNumber} &nbsp;|&nbsp;
+                                                                        <FaBed
+                                                                            className={`inline`}/> &nbsp; {room.beds} Beds
                                                                     </p>
                                                                     <p>
                                                                         {room.isAvailable ? 'Available' : 'Occupied'}
                                                                     </p>
                                                                 </div>
-                                                                <div>
-                                                                    <button
-                                                                        type="button"
-                                                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                                                    >
-                                                                        Edit
-                                                                    </button>
-                                                                    <button
-                                                                        disabled={!room.isAvailable}
-                                                                        type="button"
-                                                                        className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${!room.isAvailable ? 'disabled bg-gray-300 hover:bg-gray-200' : ''}`}
-                                                                    >
-                                                                        Delete
-                                                                    </button>
+                                                                <div className={`col-start-8`}>
+                                                                    {editState && <>
+                                                                        {room.isAvailable &&
+                                                                            <button
+                                                                                disabled={!room.isAvailable}
+                                                                                type="button"
+                                                                                className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${!room.isAvailable ? 'disabled bg-gray-300 hover:bg-gray-200' : ''}`}
+                                                                            >
+                                                                                Delete
+                                                                            </button>
+                                                                        }</>}
                                                                 </div>
                                                             </div>
+                                                            <hr className={`mt-2`}/>
                                                         </div>
                                                     )
                                                 })}
