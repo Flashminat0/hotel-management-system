@@ -6,6 +6,7 @@
     "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5.1",
     "axios": "^0.27.2",
@@ -15,7 +16,8 @@
     "http-proxy-middleware": "^2.0.4",
     "next": "latest",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",

@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import HomeLayout from "../components/layout/HomeLayout";
 import HotelManagerProtectedRoute from "../components/layout/HotelManagerProtectedRoute";
+import {RiHomeLine} from "react-icons/ri";
+import {ImKey} from "react-icons/im";
+import {FaBed} from "react-icons/fa";
 
 const HotelPanel = () => {
     const [roomData, setRoomData] = useState([]);
@@ -20,30 +23,30 @@ const HotelPanel = () => {
     }, []);
 
     useEffect(() => {
-
-
-        // Select only unique room types
         const uniqueRoomTypes = [...new Set(roomData.map(room => room.roomType))];
-        //["small","medium","large"],
-
 
         if (roomData.length > 0) {
+
+            const filteredRoomArray = []
+
             uniqueRoomTypes.map((roomType) => {
                 roomData.map(singleRoom => {
                     if (singleRoom.roomType === roomType) {
-                        console.log(singleRoom);
-                        setFilteredRoomData(prevState => [...prevState, singleRoom]);
+                        filteredRoomArray.push(singleRoom);
                     }
                 })
             })
+
+            setFilteredRoomData(filteredRoomArray);
         }
+
     }, [roomData]);
 
 
     const saveData = async (e) => {
         e.preventDefault();
         await axios.put('/api/hotel/update-hotel', {
-            roomData,
+            roomData: filteredRoomData,
             hotelOwnerId: JSON.parse(localStorage.getItem('HotelUser'))._id
         }).then(res => {
             setRoomData(res.data.newHotel.rooms);
@@ -74,7 +77,43 @@ const HotelPanel = () => {
                                         <div className="px-4 py-5 bg-white sm:p-6">
                                             <div className="grid grid-cols-6 gap-6">
 
-                                                {JSON.stringify(filteredRoomData)}
+                                                {filteredRoomData.map((room, index) => {
+                                                    return (
+                                                        <div key={index} className="col-span-6">
+                                                            <div className="flex items-stretch w-full">
+                                                                <div className="flex-shrink-0">
+                                                                    <RiHomeLine className="h-6 w-6 text-gray-400"/>
+                                                                </div>
+                                                                <div className="ml-4">
+                                                                    <h4 className="text-lg leading-6 font-medium text-gray-900">
+                                                                        {room.roomType[0].toUpperCase() + room.roomType.slice(1) + ' Room'}
+                                                                    </h4>
+                                                                    <p className="mt-1 text-sm leading-5 text-gray-500">
+                                                                        LKR {room.price} &nbsp;|&nbsp; <ImKey className={`inline h-2`}/> {room.roomNumber} &nbsp;|&nbsp; <FaBed className={`inline`}/>  {room.beds} Beds
+                                                                    </p>
+                                                                    <p>
+                                                                        {room.isAvailable ? 'Available' : 'Occupied'}
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+                                                                    <button
+                                                                        disabled={!room.isAvailable}
+                                                                        type="button"
+                                                                        className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${!room.isAvailable ? 'disabled bg-gray-300 hover:bg-gray-200' : ''}`}
+                                                                    >
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
 
 
                                             </div>
