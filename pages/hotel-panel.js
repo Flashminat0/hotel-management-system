@@ -4,9 +4,10 @@ import HomeLayout from "../components/layout/HomeLayout";
 import HotelManagerProtectedRoute from "../components/layout/HotelManagerProtectedRoute";
 
 const HotelPanel = () => {
-    const [roomData, setRoomData] = useState({});
+    const [roomData, setRoomData] = useState([]);
     const [editState, setEditState] = useState(false);
 
+    const [filteredRoomData, setFilteredRoomData] = useState([]);
 
     useEffect(() => {
         axios.get('/api/hotel/get-hotel', {
@@ -18,22 +19,26 @@ const HotelPanel = () => {
         })
     }, []);
 
-    const changeData = (e) => {
-        if (e.target.value === "") {
-            setRoomData({...roomData, [e.target.name]: 0});
-        }
+    useEffect(() => {
 
-        if (isNaN(parseInt(e.target.value))) {
-            return;
-        }
 
-        setRoomData((prevState) => {
-            return {
-                ...prevState,
-                [e.target.name]: parseInt(e.target.value)
-            }
-        })
-    }
+        // Select only unique room types
+        const uniqueRoomTypes = [...new Set(roomData.map(room => room.roomType))];
+        //["small","medium","large"],
+
+
+        if (roomData.length > 0) {
+            uniqueRoomTypes.map((roomType) => {
+                roomData.map(singleRoom => {
+                    if (singleRoom.roomType === roomType) {
+                        console.log(singleRoom);
+                        setFilteredRoomData(prevState => [...prevState, singleRoom]);
+                    }
+                })
+            })
+        }
+    }, [roomData]);
+
 
     const saveData = async (e) => {
         e.preventDefault();
@@ -68,33 +73,10 @@ const HotelPanel = () => {
                                     <div className="shadow overflow-hidden sm:rounded-md">
                                         <div className="px-4 py-5 bg-white sm:p-6">
                                             <div className="grid grid-cols-6 gap-6">
-                                                {Object.keys(roomData).map((key, index) => {
-                                                    return (
-                                                        <div
-                                                            key={index}
-                                                            className={`col-span-6 grid grid-cols-6    `}>
-                                                            <div
-                                                                className="col-span-6 sm:col-span-3">
-                                                                {key[0].toUpperCase() + key.slice(1).split('R').join(' R')}s
-                                                            </div>
 
-                                                            <div
-                                                                className="col-span-6 sm:col-span-3">
-                                                                <input
-                                                                    value={roomData[key]}
-                                                                    disabled={!editState}
-                                                                    onChange={changeData}
-                                                                    placeholder={` ${roomData[key]}`}
-                                                                    type="text"
-                                                                    name={key}
-                                                                    id="last-name"
-                                                                    autoComplete="number"
-                                                                    className={`mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md  ${editState ? '' : 'bg-gray-100'}`}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
+                                                {JSON.stringify(filteredRoomData)}
+
+
                                             </div>
                                             <hr className={`sm:hidden mt-2`}/>
                                         </div>

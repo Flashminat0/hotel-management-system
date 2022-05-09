@@ -149,8 +149,8 @@ const BecomeHotelManager = () => {
                         </label>
                         <div className={`mt-1 flex items-center ${showImage && 'grid'}`}>
                             {showImage &&
-                                <div className={`grid place-items-center`}>
-                                    <img src={image.url} alt={image.name}/>
+                                <div className={`grid place-items-center `}>
+                                    <img src={image.url} alt={image.name} className={`h-24`}/>
                                 </div>}
 
                             {!showImage && <label
