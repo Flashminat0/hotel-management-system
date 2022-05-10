@@ -13,7 +13,7 @@ const Rooms = () => {
     const [filteredHotels, setFilteredHotels] = useState([]);
     const [roomData, setRoomData] = useState([]);
 
-    let [isOpen, setIsOpen] = useState(true)
+    let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
         setIsOpen(false)
@@ -138,7 +138,7 @@ const Rooms = () => {
                                                                                 console.log(singleRoom.data)
                                                                             }}
                                                                             key={index}
-                                                                            className={`flex items-center bg-blue-400 rounded-full ${singleRoom.data.isAvailable ? 'cursor-pointer' : ''}`}>
+                                                                            className={`flex items-center bg-indigo-500 rounded-full ${singleRoom.data.isAvailable ? 'cursor-pointer' : ''}`}>
                                                                             <div
                                                                                 className={`p-4 rounded-full h-10 w-10 ${singleRoom.data.isAvailable ? 'bg-green-400' : 'bg-red-500'}`}>
 
