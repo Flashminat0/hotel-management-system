@@ -33,11 +33,11 @@ const Login = () => {
             .then(async () => {
                 await axios.post('/api/login', {
                     email: auth.currentUser.email,
+                }).then((res) => {
+                    localStorage.setItem('HotelUser', JSON.stringify(res.data));
+                }) .then(async () => {
+                    await router.push('/');
                 })
-            })
-
-            .then(async () => {
-                await router.push('/');
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -66,12 +66,12 @@ const Login = () => {
                     email: auth.currentUser.email,
                 }).then((res) => {
                     localStorage.setItem('HotelUser', JSON.stringify(res.data));
+                }) .then(async () => {
+                    await router.push('/');
                 })
             })
 
-            .then(async () => {
-                await router.push('/');
-            })
+
 
             .catch((error) => {
                 // Handle Errors here.

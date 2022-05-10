@@ -35,12 +35,9 @@ const Register = () => {
                             name: auth.currentUser.displayName,
                             email: auth.currentUser.email,
                         }).then(async (res) => {
-                            // Profile updated!
                             localStorage.setItem('HotelUser', JSON.stringify(res.data));
-
-
+                        }).then(async () => {
                             await router.push('/');
-                            // ...
                         })
                     })
                     .catch((error) => {
@@ -75,11 +72,11 @@ const Register = () => {
                     email: auth.currentUser.email,
                 }).then((res) => {
                     localStorage.setItem('HotelUser', JSON.stringify(res.data));
+                }).then(async () => {
+                    await router.push('/');
                 })
             })
-            .then(async () => {
-                await router.push('/');
-            })
+
             .catch((error) => {
                 // Handle Errors here.
                 const errorCode = error.code;
