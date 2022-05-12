@@ -2,6 +2,7 @@ import React, {useEffect, useState, Fragment} from 'react';
 import HomeLayout from "../components/layout/HomeLayout";
 import axios from "axios";
 import {Dialog, Transition} from '@headlessui/react'
+import {GoogleMap, LoadScript, Marker, useJsApiLoader} from '@react-google-maps/api';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -58,9 +59,30 @@ const Rooms = () => {
                 });
             }
         })
+
     }, [hotels]);
 
+    const [libraries] = useState(['places']);
+    const {isLoaded} = useJsApiLoader({
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API,
+        libraries: libraries,
+    })
 
+    const [map, setMap] = React.useState(null)
+    const [center, setCenter] = useState({
+        lat: 6.9271,
+        lng: 79.8612
+    });
+    const onLoad = React.useCallback(function callback(map) {
+        const bounds = new window.google.maps.LatLngBounds(center);
+        map.fitBounds(bounds);
+        setMap(map)
+    }, [])
+
+    const onUnmount = React.useCallback(function callback(map) {
+        setMap(null)
+        const google = window.google;
+    }, [])
     return (
         <HomeLayout>
             <>
@@ -70,15 +92,41 @@ const Rooms = () => {
                             return (
                                 <div key={index}
                                      className={`grid grid-cols-6 gap-4 p-5 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
-                                    <div className={`row-span-2 col-span-2 p-4`}>
+                                    <div className={`row-span-1 col-span-2 p-4`}>
                                         <img src={singleHotel.image.url} alt=""
                                              className={`h-full w-full object-cover rounded-lg shadow-lg`}/>
-
                                     </div>
-                                    <div className={`col-span-4 grid grid-rows-2 row-span-2`}>
+                                    <div className={`col-span-4 grid grid-rows-4 row-span-2`}>
                                         <div>
                                             <p className={`text-4xl font-semibold`}>{singleHotel.name}</p>
-                                            <p className={`text-2xl`}>{singleHotel.address}</p>
+                                            <p className={`text-2xl`}>{singleHotel.address.address}</p>
+                                        </div>
+                                        <div className={`row-span-2`}>
+                                            {isLoaded && <GoogleMap
+                                                mapContainerStyle={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                }}
+                                                center={{
+                                                    lat: singleHotel.address.lat,
+                                                    lng: singleHotel.address.lng,
+                                                }}
+                                                zoom={15}
+                                                onLoad={onLoad}
+                                                onUnmount={onUnmount}
+                                                options={{
+                                                    streetViewControl: false,
+                                                    mapTypeControl: false,
+                                                }}
+                                            >
+                                                <Marker
+                                                    animation={2}
+                                                    position={{
+                                                        lat: singleHotel.address.lat,
+                                                        lng: singleHotel.address.lng,
+                                                    }}
+                                                    draggable={true}/>
+                                            </GoogleMap>}
                                         </div>
                                         <div className={`place-items-end grid place-content-evenly`}>
                                             <button
@@ -92,7 +140,6 @@ const Rooms = () => {
                                                 Browse rooms
                                             </button>
                                         </div>
-
                                     </div>
 
 

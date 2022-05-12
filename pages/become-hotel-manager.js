@@ -199,7 +199,7 @@ const BecomeHotelManager = () => {
                                 <label htmlFor="address1" className="block text-sm font-medium text-gray-700">
                                     Address
                                 </label>
-                                <div className="mt-1 grid grid-cols-10 gap-5">
+                                <div className="mt-1 grid grid-cols-10 gap-5 grid-rows-2 lg:grid-rows-1">
                                     <Autocomplete
                                         className={`col-span-8`}
                                         onPlaceChanged={(place) => {
@@ -221,7 +221,7 @@ const BecomeHotelManager = () => {
                                             className="block w-full shadow-sm sm:text-sm focus:ring-grape-500 focus:border-grape-500 border-gray-300 rounded-md"
                                         />
                                     </Autocomplete>
-                                    <div className={`col-span-2 grid place-content-center`}>
+                                    <div className={`lg:col-span-2 grid place-content-center`}>
                                         <button
                                             className= {`grid place-items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  w-max ${checked ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}`}
                                             onClick={convertToLatLng}>
@@ -238,7 +238,7 @@ const BecomeHotelManager = () => {
                                 <GoogleMap
                                     mapContainerStyle={containerStyle}
                                     center={center}
-                                    zoom={10}
+                                    zoom={15}
                                     onLoad={onLoad}
                                     onUnmount={onUnmount}
                                     options={{
