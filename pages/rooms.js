@@ -69,15 +69,8 @@ const Rooms = () => {
     })
 
     const [map, setMap] = React.useState(null)
-    const [center, setCenter] = useState({
-        lat: 6.9271,
-        lng: 79.8612
-    });
-    const onLoad = React.useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
-        setMap(map)
-    }, [])
+
+
 
     const onUnmount = React.useCallback(function callback(map) {
         setMap(null)
@@ -112,7 +105,6 @@ const Rooms = () => {
                                                     lng: singleHotel.address.lng,
                                                 }}
                                                 zoom={15}
-                                                onLoad={onLoad}
                                                 onUnmount={onUnmount}
                                                 options={{
                                                     streetViewControl: false,
@@ -125,7 +117,7 @@ const Rooms = () => {
                                                         lat: singleHotel.address.lat,
                                                         lng: singleHotel.address.lng,
                                                     }}
-                                                    draggable={true}/>
+                                                    draggable={false}/>
                                             </GoogleMap>}
                                         </div>
                                         <div className={`place-items-end grid place-content-evenly`}>
