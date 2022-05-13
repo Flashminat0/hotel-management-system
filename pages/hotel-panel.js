@@ -108,6 +108,11 @@ const HotelPanel = () => {
 
         await saveData(e, newRoom).then(res => {
             fetchRoomData();
+        }).then(res => {
+            setRoomType('');
+            setRoomNumber('');
+            setBeds('');
+            setPrice('');
         })
     }
 
