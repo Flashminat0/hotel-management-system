@@ -134,7 +134,7 @@ const Rooms = () => {
                                                     openModal()
                                                     setRoomData({
                                                         roomData: singleHotel.rooms,
-                                                        ownerId: singleHotel._id
+                                                        ownerId: singleHotel.owner
                                                     })
                                                 }}
                                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -187,6 +187,8 @@ const Rooms = () => {
                                                                 return (
                                                                     <div
                                                                         onClick={async () => {
+                                                                            console.log(singleRoom);
+                                                                            console.log(roomData);
                                                                             //TODO make a suitable page
                                                                             await router.push({
                                                                                 pathname: `/single-room/${singleRoom.data.id}`,
@@ -198,6 +200,7 @@ const Rooms = () => {
                                                                         }}
                                                                         key={index}
                                                                         className={`flex items-center bg-indigo-500 rounded-full ${singleRoom.data.isAvailable ? 'cursor-pointer' : ''}`}>
+
                                                                         <div
                                                                             className={`p-4 rounded-full h-10 w-10 ${singleRoom.data.isAvailable ? 'bg-green-400' : 'bg-red-500'}`}>
 

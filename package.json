@@ -20,7 +20,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-geocode": "^0.2.3",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "react-paypal-express-checkout": "^1.0.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
