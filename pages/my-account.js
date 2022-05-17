@@ -3,17 +3,37 @@ import HomeLayout from "../components/layout/HomeLayout";
 import UserProtectRoute from "../components/layout/UserProtectRoute";
 import {SpeakerphoneIcon, XIcon} from '@heroicons/react/outline'
 import {useRouter} from "next/router";
+import axios from "axios";
+import { CalendarIcon, ChevronRightIcon } from '@heroicons/react/solid'
 
 const MyAccount = () => {
     const router = useRouter();
 
     const [role, setRole] = useState([]);
+    const [userId, setUserId] = useState('');
+    const [roomArray, setRoomArray] = useState([]);
 
     useEffect(() => {
-        if (localStorage.getItem('HotelUser') !== null) {
-            setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
+        if (localStorage.getItem('HotelUser') === null) {
+            return
         }
+        setRole(JSON.parse(localStorage.getItem('HotelUser')).role)
+        setUserId(JSON.parse(localStorage.getItem('HotelUser'))._id)
     }, []);
+
+
+    useEffect(() => {
+        if (userId === '') {
+            return
+        }
+        axios.get('/api/user/get-details', {
+            params: {
+                userId: userId
+            }
+        }).then(res => {
+            setRoomArray(res.data.user.room)
+        })
+    }, [userId]);
 
     return (
         <HomeLayout>
@@ -49,7 +69,8 @@ const MyAccount = () => {
                             <div className="pr-16 sm:text-center sm:px-16">
                                 <p className="font-medium text-white">
                                     <span className="md:hidden">Congratulations! You can access Hotel Panel Page.</span>
-                                    <span className="hidden md:inline">Congratulations! You can access Hotel Panel Page.</span>
+                                    <span
+                                        className="hidden md:inline">Congratulations! You can access Hotel Panel Page.</span>
                                     <span className="block sm:ml-2 sm:inline-block">
                                         <a
                                             onClick={async () => {
@@ -101,7 +122,8 @@ const MyAccount = () => {
                         <div className="pr-16 sm:text-center sm:px-16">
                             <p className="font-medium text-white">
                                 <span className="md:hidden">Congratulations! You can access Taxi Panel Page.</span>
-                                <span className="hidden md:inline">Congratulations! You can access Taxi Panel Page.</span>
+                                <span
+                                    className="hidden md:inline">Congratulations! You can access Taxi Panel Page.</span>
                                 <span className="block sm:ml-2 sm:inline-block">
                                      <a
                                          onClick={async () => {
@@ -127,6 +149,9 @@ const MyAccount = () => {
                     </div>
                 </div>
                 }
+
+                <hr/>
+                {JSON.stringify(roomArray)}
 
             </UserProtectRoute>
         </HomeLayout>

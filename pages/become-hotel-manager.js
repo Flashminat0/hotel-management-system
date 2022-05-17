@@ -14,7 +14,6 @@ const BecomeHotelManager = () => {
     const auth = getAuth(firebaseApp);
 
 
-
     const containerStyle = {
         height: '400px'
     };
@@ -112,10 +111,12 @@ const BecomeHotelManager = () => {
 
         if (name === '' || address === '' || image.url === '' || image.name === '') {
             alert('Please fill all the fields');
+            return;
         }
 
-        if(checked === false){
+        if (checked === false) {
             alert('Please first check your address with the map');
+            return;
         }
 
         await axios.put('/api/user/become-hotel-manager', {
@@ -223,7 +224,7 @@ const BecomeHotelManager = () => {
                                     </Autocomplete>
                                     <div className={`lg:col-span-2 grid place-content-center`}>
                                         <button
-                                            className= {`grid place-items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  w-max ${checked ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}`}
+                                            className={`grid place-items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white  focus:outline-none focus:ring-2 focus:ring-offset-2  w-max ${checked ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'}`}
                                             onClick={convertToLatLng}>
                                             {checked ? <span className={`grid grid-cols-3 place-items-center`}>
                                                 <BsCheckLg className="w-6 h-6"/>
