@@ -1,6 +1,7 @@
 import React from 'react';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
-
+import axios from "axios";
+import {useRouter} from "next/router";
 
 export default class PayPalButton extends React.Component {
     render() {
@@ -8,12 +9,19 @@ export default class PayPalButton extends React.Component {
 
             console.log("The payment was succeeded!", payment);
 
+
         }
 
         const onCancel = (data) => {
 
-            console.log('The payment was cancelled!', data);
-            console.log(this.props.price);
+
+            axios.post('/api/hotel/book-room', {
+                userId: JSON.parse(localStorage.getItem('HotelUser'))._id,
+                hotelOwnerId: this.props.hotelOwnerId,
+                roomId: this.props.roomId,
+            }).then(res => {
+            //    user bought the room
+            }).catch(err => console.log(err));
 
 
         }
@@ -31,7 +39,7 @@ export default class PayPalButton extends React.Component {
 
 
         const client = {
-            sandbox: 'PAYPAl_SANDBOX_CLIENT_ID',
+            // sandbox: 'PAYPAl_SANDBOX_CLIENT_ID',
             production: 'YOUR-PRODUCTION-APP-ID',  //fill with your app id
         }
 

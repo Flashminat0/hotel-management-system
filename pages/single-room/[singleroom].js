@@ -11,8 +11,8 @@ const SingleRoom = () => {
     const [roomData, setRoomData] = useState({});
 
 
+    const {singleroom, hotelOwnerId} = router.query;
     useEffect(async () => {
-        const {singleroom, hotelOwnerId} = router.query;
 
         if (!hotelOwnerId) return;
 
@@ -54,7 +54,7 @@ const SingleRoom = () => {
                                 </div>
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">Price</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">LKR {roomData.price}.00</dd>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">USD {roomData.price}.00</dd>
                                 </div>
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">Available</dt>
@@ -64,8 +64,10 @@ const SingleRoom = () => {
                         </div>
                     </div>
                     <div className={`grid place-items-center pt-10`}>
-                        <PayPalButton price={roomData.price} hotelOwnerId={roomData.hotelOwnerId}
-                                      roomId={roomData.roomId}/>
+                        {roomData &&
+                            <PayPalButton price={roomData.price} hotelOwnerId={hotelOwnerId}
+                                          roomId={singleroom}/>
+                        }
                     </div>
                 </div>
             </>}

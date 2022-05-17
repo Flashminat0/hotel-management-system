@@ -187,8 +187,6 @@ const Rooms = () => {
                                                                 return (
                                                                     <div
                                                                         onClick={async () => {
-                                                                            console.log(singleRoom);
-                                                                            console.log(roomData);
                                                                             //TODO make a suitable page
                                                                             await router.push({
                                                                                 pathname: `/single-room/${singleRoom.data.id}`,
