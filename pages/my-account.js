@@ -4,7 +4,38 @@ import UserProtectRoute from "../components/layout/UserProtectRoute";
 import {SpeakerphoneIcon, XIcon} from '@heroicons/react/outline'
 import {useRouter} from "next/router";
 import axios from "axios";
-import { CalendarIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import { CalendarIcon, LocationMarkerIcon, UsersIcon } from '@heroicons/react/solid'
+
+const positions = [
+    {
+        id: 1,
+        title: 'Back End Developer',
+        type: 'Full-time',
+        location: 'Remote',
+        department: 'Engineering',
+        closeDate: '2020-01-07',
+        closeDateFull: 'January 7, 2020',
+    },
+    {
+        id: 2,
+        title: 'Front End Developer',
+        type: 'Full-time',
+        location: 'Remote',
+        department: 'Engineering',
+        closeDate: '2020-01-07',
+        closeDateFull: 'January 7, 2020',
+    },
+    {
+        id: 3,
+        title: 'User Interface Designer',
+        type: 'Full-time',
+        location: 'Remote',
+        department: 'Design',
+        closeDate: '2020-01-14',
+        closeDateFull: 'January 14, 2020',
+    },
+];
+
 
 const MyAccount = () => {
     const router = useRouter();
@@ -151,7 +182,45 @@ const MyAccount = () => {
                 }
 
                 <hr/>
-                {JSON.stringify(roomArray)}
+                <h1 className={`text-2xl font-semibold p-3 pb-1`}>Booked Rooms</h1><br/>
+                <div className="bg-white shadow overflow-hidden sm:rounded-md p-2">
+                    <ul role="list" className="divide-y divide-gray-200">
+                        {roomArray.map((singleRoom) => (
+                            <li key={singleRoom.id}>
+                                <a href="#" className="block hover:bg-gray-50">
+                                    <div className="px-4 py-4 sm:px-6">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm font-medium text-indigo-600 truncate">{singleRoom.roomType}</p>
+                                            <div className="ml-2 flex-shrink-0 flex">
+                                                <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    {singleRoom.roomNumber}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="mt-2 sm:flex sm:justify-between">
+                                            <div className="sm:flex">
+                                                <p className="flex items-center text-sm text-gray-500">
+                                                    <UsersIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                    {singleRoom.beds}
+                                                </p>
+                                                <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                                    <LocationMarkerIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                    {singleRoom.hotelAddress.address}
+                                                </p>
+                                            </div>
+                                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                                <CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                <p>
+                                                    Booked on <time dateTime={singleRoom.time}>{singleRoom.time}</time>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
             </UserProtectRoute>
         </HomeLayout>

@@ -52,7 +52,7 @@ const PayPalButton = (props) => {
                 shape: 'rect',
                 label: 'checkout'
             }}
-            env={env} client={client} currency={currency} total={total} onError={onError}
+            env={env} client={client} currency={currency} total={total ? total : 1} onError={onError}
             onSuccess={onSuccess} onCancel={onCancel}/>
     );
 };
