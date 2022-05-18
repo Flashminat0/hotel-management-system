@@ -40,7 +40,8 @@ const PayPalButton = (props) => {
 
 
     const client = {
-        sandbox: 'PAYPAl_SANDBOX_CLIENT_ID',
+        // sandbox: 'PAYPAl_SANDBOX_CLIENT_ID',
+        sandbox: 'AQKrqLAGPHWXvNqTXhSYhd59be7VZ_odFtqfvbSpy-41OU40n9192H7J-Qpf1nmeap6RetRCPj_i96rb',
         production: 'YOUR-PRODUCTION-APP-ID',  //fill with your app id
     }
 

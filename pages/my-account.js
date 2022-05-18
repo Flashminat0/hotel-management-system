@@ -1,40 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
 import HomeLayout from "../components/layout/HomeLayout";
 import UserProtectRoute from "../components/layout/UserProtectRoute";
 import {SpeakerphoneIcon, XIcon} from '@heroicons/react/outline'
 import {useRouter} from "next/router";
 import axios from "axios";
-import { CalendarIcon, LocationMarkerIcon, UsersIcon } from '@heroicons/react/solid'
-
-const positions = [
-    {
-        id: 1,
-        title: 'Back End Developer',
-        type: 'Full-time',
-        location: 'Remote',
-        department: 'Engineering',
-        closeDate: '2020-01-07',
-        closeDateFull: 'January 7, 2020',
-    },
-    {
-        id: 2,
-        title: 'Front End Developer',
-        type: 'Full-time',
-        location: 'Remote',
-        department: 'Engineering',
-        closeDate: '2020-01-07',
-        closeDateFull: 'January 7, 2020',
-    },
-    {
-        id: 3,
-        title: 'User Interface Designer',
-        type: 'Full-time',
-        location: 'Remote',
-        department: 'Design',
-        closeDate: '2020-01-14',
-        closeDateFull: 'January 14, 2020',
-    },
-];
+import {CalendarIcon, LocationMarkerIcon, UsersIcon} from '@heroicons/react/solid'
+import {Dialog, Transition} from "@headlessui/react";
+import {GoogleMap, LoadScript, Marker, useJsApiLoader} from '@react-google-maps/api';
 
 
 const MyAccount = () => {
@@ -43,6 +15,7 @@ const MyAccount = () => {
     const [role, setRole] = useState([]);
     const [userId, setUserId] = useState('');
     const [roomArray, setRoomArray] = useState([]);
+
 
     useEffect(() => {
         if (localStorage.getItem('HotelUser') === null) {
@@ -66,9 +39,58 @@ const MyAccount = () => {
         })
     }, [userId]);
 
+    let [isOpen, setIsOpen] = useState(false)
+    const [modalRoomData, setModalRoomData] = useState({});
+
+    function closeModal() {
+        setModalRoomData({})
+        setIsOpen(false)
+    }
+
+    async function openModal() {
+        await calculateRoute()
+        setIsOpen(true)
+    }
+
+    const [libraries] = useState(['places']);
+    const {isLoaded} = useJsApiLoader({
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API,
+        libraries: libraries,
+    })
+
+    const [map, setMap] = React.useState(null)
+    const onUnmount = React.useCallback(function callback(map) {
+        setMap(null)
+        const google = window.google;
+    }, [])
+
+    async function calculateRoute() {
+        // eslint-disable-next-line no-undef
+        const directionsService = new google.maps.DirectionsService()
+        const results = await directionsService.route({
+            origin: {
+                lat: 6.914677500000001,
+                lng: 79.9729445
+            },
+            destination: {
+                lat: 6.1914677500000001,
+                lng: 79.19729445
+            },
+            // eslint-disable-next-line no-undef
+            travelMode: google.maps.TravelMode.DRIVING,
+        })
+
+        console.log(results)
+
+        // setDirectionsResponse(results)
+        // setDistance(results.routes[0].legs[0].distance.text)
+        // setDuration(results.routes[0].legs[0].duration.text)
+    }
+
     return (
         <HomeLayout>
-            <UserProtectRoute>
+            <UserProtectRoute><>
+
                 {!role.includes(`hotel-owner`) ? <div className={`m-5`}>
                         <div className="bg-white shadow sm:rounded-lg">
                             <div className="px-4 py-5 sm:p-6">
@@ -182,46 +204,119 @@ const MyAccount = () => {
                 }
 
                 <hr/>
-                <h1 className={`text-2xl font-semibold p-3 pb-1`}>Booked Rooms</h1><br/>
-                <div className="bg-white shadow overflow-hidden sm:rounded-md p-2">
-                    <ul role="list" className="divide-y divide-gray-200">
-                        {roomArray.map((singleRoom) => (
-                            <li key={singleRoom.id}>
-                                <a href="#" className="block hover:bg-gray-50">
-                                    <div className="px-4 py-4 sm:px-6">
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-sm font-medium text-indigo-600 truncate">{singleRoom.roomType}</p>
-                                            <div className="ml-2 flex-shrink-0 flex">
-                                                <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    {singleRoom.roomNumber}
-                                                </p>
+                <>
+                    <h1 className={`text-2xl font-semibold p-3 pb-1`}>Booked Rooms</h1><br/>
+                    <div className="bg-white shadow overflow-hidden sm:rounded-md p-2">
+                        <ul role="list" className="divide-y divide-gray-200">
+                            {roomArray.map((singleRoom) => (
+                                <li key={singleRoom.id}
+                                    onClick={() => {
+                                        setModalRoomData(singleRoom)
+                                        openModal()
+                                    }}
+                                >
+                                    <a href="#" className="block hover:bg-gray-50">
+                                        <div className="px-4 py-4 sm:px-6">
+                                            <div className="flex items-center justify-between">
+                                                <p className="text-sm font-medium text-indigo-600 truncate">{singleRoom.roomType}</p>
+                                                <div className="ml-2 flex-shrink-0 flex">
+                                                    <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                        {singleRoom.roomNumber}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="mt-2 sm:flex sm:justify-between">
+                                                <div className="sm:flex">
+                                                    <p className="flex items-center text-sm text-gray-500">
+                                                        <UsersIcon
+                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                                                            aria-hidden="true"/>
+                                                        {singleRoom.beds}
+                                                    </p>
+                                                    <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                                        <LocationMarkerIcon
+                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                                                            aria-hidden="true"/>
+                                                        {singleRoom.hotelAddress.address}
+                                                    </p>
+                                                </div>
+                                                <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                                    <CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                                                                  aria-hidden="true"/>
+                                                    <p>
+                                                        Booked on <time
+                                                        dateTime={singleRoom.time}>{singleRoom.time}</time>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="mt-2 sm:flex sm:justify-between">
-                                            <div className="sm:flex">
-                                                <p className="flex items-center text-sm text-gray-500">
-                                                    <UsersIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                    {singleRoom.beds}
-                                                </p>
-                                                <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
-                                                    <LocationMarkerIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                    {singleRoom.hotelAddress.address}
-                                                </p>
-                                            </div>
-                                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                                                <CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                <p>
-                                                    Booked on <time dateTime={singleRoom.time}>{singleRoom.time}</time>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </>
+                <>
+                    <Transition appear show={isOpen} as={Fragment}>
+                        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0"
+                                enterTo="opacity-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                            >
+                                <div className="fixed inset-0 bg-black bg-opacity-25"/>
+                            </Transition.Child>
 
+                            <div className="fixed inset-0 overflow-y-auto">
+                                <div
+                                    className="flex min-h-full items-center justify-center p-4 text-center">
+                                    <Transition.Child
+                                        as={Fragment}
+                                        enter="ease-out duration-300"
+                                        enterFrom="opacity-0 scale-95"
+                                        enterTo="opacity-100 scale-100"
+                                        leave="ease-in duration-200"
+                                        leaveFrom="opacity-100 scale-100"
+                                        leaveTo="opacity-0 scale-95"
+                                    >
+                                        <Dialog.Panel
+                                            className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                            <Dialog.Title
+                                                as="h3"
+                                                className="text-3xl font-medium leading-6 text-gray-900"
+                                            >
+                                                Select a room
+                                            </Dialog.Title>
+                                            <div className="mt-4 grid grid-cols-3 gap-2 ">
+                                                {modalRoomData && modalRoomData.hotelAddress && <>
+                                                    {JSON.stringify(modalRoomData.hotelAddress.lat)}
+                                                    {JSON.stringify(modalRoomData.hotelAddress.lng)}
+
+                                                    {/*x  */}
+                                                </>}
+                                            </div>
+
+                                            <div className="grid place-items-end mt-4">
+                                                <button
+                                                    type="button"
+                                                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                                    onClick={closeModal}
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </Dialog.Panel>
+                                    </Transition.Child>
+                                </div>
+                            </div>
+                        </Dialog>
+                    </Transition>
+                </>
+            </>
             </UserProtectRoute>
         </HomeLayout>
     );

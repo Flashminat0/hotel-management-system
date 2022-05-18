@@ -188,7 +188,7 @@ const Rooms = () => {
                                                                     <div
                                                                         onClick={async () => {
 
-                                                                            if (!singleRoom.data.isAvailable) return;
+                                                                            if (!singleRoom.data.isAvailable)   return;
 
                                                                             //TODO make a suitable page
                                                                             await router.push({

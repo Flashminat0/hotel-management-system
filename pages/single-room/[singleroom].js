@@ -69,6 +69,11 @@ const SingleRoom = () => {
                                           roomId={singleroom}/>
                         }
                     </div>
+                    <div className={`grid place-items-center pt-10`}>
+                       <div>
+                           <p>add google map here later</p>
+                       </div>
+                    </div>
                 </div>
             </>}
 

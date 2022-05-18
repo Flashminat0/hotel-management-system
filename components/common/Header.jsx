@@ -71,12 +71,6 @@ const Header = () => {
                                     Rooms
                                 </a>
                             </Link>
-                            <Link href={'/pricing'}>
-                                <a
-                                    className="text-base font-medium text-white hover:text-indigo-50">
-                                    Pricing
-                                </a>
-                            </Link>
                             <Link href={'/taxi'}>
                                 <a
                                     className="text-base font-medium text-white hover:text-indigo-50">
@@ -89,21 +83,6 @@ const Header = () => {
                                     Account
                                 </a>
                             </Link>}
-                            {loggedIn &&
-                                <>
-                                    {role && <>
-                                        {role.includes("taxi-owner")
-                                            &&
-                                            <Link href={'/taxi-panel'}>
-                                                <a
-                                                    className="text-base font-medium text-white hover:text-indigo-50">
-                                                    Taxi Driver Panel
-                                                </a>
-                                            </Link>
-                                        }
-                                    </>}
-                                </>
-                            }
                             {loggedIn &&
                                 <>
                                     {role && <>
@@ -197,21 +176,6 @@ const Header = () => {
                                         <a
                                             className="text-base font-medium text-white hover:text-indigo-50">
                                             Hotel Panel
-                                        </a>
-                                    </Link>
-                                }
-                            </>}
-                        </>
-                    }
-                    {loggedIn &&
-                        <>
-                            {role && <>
-                                {role.includes("taxi-owner")
-                                    &&
-                                    <Link href={'/taxi-panel'}>
-                                        <a
-                                            className="text-base font-medium text-white hover:text-indigo-50">
-                                            Taxi Driver Panel
                                         </a>
                                     </Link>
                                 }
