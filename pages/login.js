@@ -5,7 +5,6 @@ import {
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     signInWithPopup,
-    FacebookAuthProvider,
     signOut
 } from "firebase/auth";
 import {firebaseApp} from "../firebase";
