@@ -91,7 +91,7 @@ const Rooms = () => {
                             return (
                                 <div key={index}
                                      className={`grid grid-cols-6 gap-4 p-5 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
-                                    <div className={`row-span-1 col-span-2 p-4`}>
+                                    <div className={`row-span-1 col-span-2 p-4 max-h-80`}>
                                         <img src={singleHotel.image.url} alt=""
                                              className={`h-full w-full object-cover rounded-lg shadow-lg`}/>
                                     </div>

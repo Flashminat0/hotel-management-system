@@ -6,7 +6,7 @@ import {useRouter} from "next/router";
 import axios from "axios";
 import {CalendarIcon, LocationMarkerIcon, UsersIcon} from '@heroicons/react/solid'
 import {Dialog, Transition} from "@headlessui/react";
-import {GoogleMap, LoadScript, Marker, useJsApiLoader} from '@react-google-maps/api';
+import {GoogleMap, LoadScript, Marker, useJsApiLoader, DirectionsRenderer} from '@react-google-maps/api';
 
 
 const MyAccount = () => {
@@ -39,18 +39,28 @@ const MyAccount = () => {
         })
     }, [userId]);
 
+    //Direction logic
     let [isOpen, setIsOpen] = useState(false)
     const [modalRoomData, setModalRoomData] = useState({});
 
     function closeModal() {
         setModalRoomData({})
         setIsOpen(false)
+        setDirectionsResponse(null)
+        setDistance('')
+        setDuration('')
     }
 
     async function openModal() {
-        await calculateRoute()
         setIsOpen(true)
     }
+
+    useEffect(async () => {
+        if (isOpen === false) {
+            return
+        }
+        await calculateRoute()
+    }, [isOpen]);
 
     const [libraries] = useState(['places']);
     const {isLoaded} = useJsApiLoader({
@@ -64,27 +74,27 @@ const MyAccount = () => {
         const google = window.google;
     }, [])
 
+    const [directionsResponse, setDirectionsResponse] = useState(null)
+    const [distance, setDistance] = useState('')
+    const [duration, setDuration] = useState('')
+
     async function calculateRoute() {
         // eslint-disable-next-line no-undef
         const directionsService = new google.maps.DirectionsService()
         const results = await directionsService.route({
-            origin: {
-                lat: 6.914677500000001,
-                lng: 79.9729445
-            },
-            destination: {
-                lat: 6.1914677500000001,
-                lng: 79.19729445
-            },
+            origin: "SLIIT, New Kandy Road, Malabe, Sri Lanka",
+            destination: modalRoomData.hotelAddress.address,
             // eslint-disable-next-line no-undef
             travelMode: google.maps.TravelMode.DRIVING,
+        }, (result, status) => {
+            if (status === google.maps.DirectionsStatus.OK) {
+                setDirectionsResponse(result)
+                setDistance(result.routes[0].legs[0].distance.text)
+                setDuration(result.routes[0].legs[0].duration.text)
+            } else {
+                console.error(`error fetching directions`)
+            }
         })
-
-        console.log(results)
-
-        // setDirectionsResponse(results)
-        // setDistance(results.routes[0].legs[0].distance.text)
-        // setDuration(results.routes[0].legs[0].duration.text)
     }
 
     return (
@@ -291,13 +301,32 @@ const MyAccount = () => {
                                             >
                                                 Select a room
                                             </Dialog.Title>
-                                            <div className="mt-4 grid grid-cols-3 gap-2 ">
+                                            <div className={`pt-10`}>
                                                 {modalRoomData && modalRoomData.hotelAddress && <>
-                                                    {JSON.stringify(modalRoomData.hotelAddress.lat)}
-                                                    {JSON.stringify(modalRoomData.hotelAddress.lng)}
-
-                                                    {/*x  */}
+                                                    {isLoaded && <GoogleMap
+                                                        mapContainerStyle={{
+                                                            height: '400px',
+                                                            width: '100%',
+                                                            borderRadius: '10px',
+                                                        }}
+                                                        center={{
+                                                            lat: modalRoomData.hotelAddress.lat,
+                                                            lng: modalRoomData.hotelAddress.lng
+                                                        }}
+                                                        zoom={20}
+                                                        onUnmount={onUnmount}
+                                                        options={{
+                                                            streetViewControl: false,
+                                                            mapTypeControl: false,
+                                                        }}
+                                                    >
+                                                        {directionsResponse && (
+                                                            <DirectionsRenderer directions={directionsResponse}/>
+                                                        )}
+                                                    </GoogleMap>}
                                                 </>}
+
+
                                             </div>
 
                                             <div className="grid place-items-end mt-4">
