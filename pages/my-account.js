@@ -324,7 +324,24 @@ const MyAccount = () => {
                                                             <DirectionsRenderer directions={directionsResponse}/>
                                                         )}
                                                     </GoogleMap>}
-                                                </>}
+                                                    {distance && <>
+                                                        <p className="text-sm font-medium text-gray-600">
+                                                            Distance from hotel: {distance}
+                                                        </p>
+                                                    </>}
+                                                    {duration && <>
+                                                        <p className="text-sm font-medium text-gray-600">
+                                                            Duration from hotel: {duration}
+                                                        </p>
+                                                    </>}
+                                                    {distance && duration && <>
+                                                        <p className="text-sm font-medium text-gray-600">
+                                                            Total cost: {10 * distance.toString().split(' ')[0] * duration.toString().split(' ')[0]} LKR
+                                                        </p>
+                                                    </>}
+
+                                                </>
+                                                }
 
 
                                             </div>

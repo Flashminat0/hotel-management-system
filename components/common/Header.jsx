@@ -71,12 +71,6 @@ const Header = () => {
                                     Rooms
                                 </a>
                             </Link>
-                            <Link href={'/taxi'}>
-                                <a
-                                    className="text-base font-medium text-white hover:text-indigo-50">
-                                    Taxi Service
-                                </a>
-                            </Link>
                             {loggedIn && <Link href={'/my-account'}>
                                 <a
                                     className="text-base font-medium text-white hover:text-indigo-50">
@@ -153,12 +147,6 @@ const Header = () => {
                         <a
                             className="text-base font-medium text-white hover:text-indigo-50">
                             Pricing
-                        </a>
-                    </Link>
-                    <Link href={'/taxi'}>
-                        <a
-                            className="text-base font-medium text-white hover:text-indigo-50">
-                            Taxi Service
                         </a>
                     </Link>
                     {loggedIn && <Link href={'/my-account'}>

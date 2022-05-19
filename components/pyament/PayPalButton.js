@@ -6,7 +6,6 @@ import {useRouter} from "next/router";
 const PayPalButton = (props) => {
     const router = useRouter();
 
-
     const onSuccess = (payment) => {
         axios.post('/api/hotel/book-room', {
             userId: JSON.parse(localStorage.getItem('HotelUser'))._id,
