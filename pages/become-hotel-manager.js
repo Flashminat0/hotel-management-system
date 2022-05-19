@@ -172,10 +172,7 @@ const BecomeHotelManager = () => {
                     {isLoaded && <div className="mx-auto p-20 lg:mx-0">
                         <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Let's work together</h2>
                         <p className="mt-4 text-lg text-gray-500 sm:mt-3">
-                            We’d love to hear from you! Send us a message using the form opposite, or email us. We’d
-                            love to
-                            hear
-                            from you! Send us a message using the form opposite, or email us.
+                            Become a hotel manager and start earning money
                         </p>
                         <form onSubmit={submitFormHandler}
                               className="mt-9 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
